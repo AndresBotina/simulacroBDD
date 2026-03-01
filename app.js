@@ -1,32 +1,38 @@
+require('dotenv').config();
 const express = require('express');
-const connectMongo = require('./config/mongo.js');
-const pool = require('./config/mysql.js');
+const connectMongo = require('./config/mongo');
+const pool = require('./config/mysql');
 
 const app = express();
+
+/**
+ * Middleware to parse JSON in request bodies
+ */
 app.use(express.json());
 
+/**
+ * MongoDB connection initialization (Mongoose)
+ */
 connectMongo();
 
-async function testMySQL() {
-    try {
-        const [rows] = await pool.query('SELECT 1');
-        console.log('MySQL conectado correctamente');
-    } catch (error) {
-        console.error('Error MySQL:', error.message);
-    }
-}
+/**
+ * API Route definitions
+ */
+const migrationRoutes = require('./routes/migration'); // CSV Import logic
+const doctorsRoutes = require('./routes/doctors');     // Doctor management (SQL + NoSQL Sync)
+const reportsRoutes = require('./routes/reports');     // Financial reports (SQL Aggregations)
+const patientsRoutes = require('./routes/patients');   // History lookup (NoSQL)
 
-const doctorsRoutes = require('./routes/doctors.js');
+// Route mounting
+app.use('/api', migrationRoutes);
 app.use('/api/doctors', doctorsRoutes);
+app.use('/api/reports', reportsRoutes);
+app.use('/api/patients', patientsRoutes);
 
-const migrationRoutes = require('./routes/migration.js');
-app.use('/api/migration', migrationRoutes);
-
-testMySQL();
-
-
-app.listen(3000, () => console.log('Servidor corriendo'));
-
-
-
-
+/**
+ * Express Server Start
+ */
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`SaludPlus server running on port ${PORT}`);
+});

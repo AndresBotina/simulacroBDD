@@ -28,7 +28,7 @@ CREATE TABLE insurances (
 -- Tabla citas
 CREATE TABLE appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    appointment_id VARCHAR(50) NOT NULL,
+    appointment_id VARCHAR(50) NOT NULL UNIQUE,
     appointment_date DATETIME NOT NULL,
     patient_id INT NOT NULL,
     doctor_id INT NOT NULL,
