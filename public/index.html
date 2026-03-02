@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaludPlus - Gestión de Doctores</title>
+</head>
+<body>
+    <!-- ESTRUCTURA DEL FRONTEND (PASO 1: HTML BÁSICO) -->
+    <!-- este archivo no tiene estilos (css) para que sea lo más simple posible -->
+    <h1>Gestión de Doctores - SaludPlus</h1>
+
+    <!-- SECCIÓN PARA CREAR UN DOCTOR -->
+    <div>
+        <h2>Crear Nuevo Doctor</h2>
+        <input type="text" id="name" placeholder="Nombre completo">
+        <input type="email" id="email" placeholder="Correo electrónico">
+        <input type="text" id="specialty" placeholder="Especialidad">
+        <button onclick="createDoctor()">Guardar Doctor</button>
+    </div>
+
+    <hr>
+
+    <!-- SECCIÓN PARA LISTAR Y ACCIONAR -->
+    <div>
+        <h2>Lista de Doctores</h2>
+        <button onclick="getDoctors()">Actualizar Lista</button>
+        <ul id="doctors-list">
+            <!-- los doctores se cargarán aquí dinámicamente -->
+            <li>Cargando doctores...</li>
+        </ul>
+    </div>
+
+    <!-- EL CAMINO DEL FRONTEND CONTINÚA EN EL ARCHIVO "script.js" -->
+    <script src="script.js"></script>
+</body>
+</html>

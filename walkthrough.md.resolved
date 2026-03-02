@@ -1,0 +1,63 @@
+# Walkthrough: Mapa del Camino del Código
+
+He "dibujado" un camino lógico a través de tu aplicación utilizando comentarios en español. Este mapa te ayudará a seguir el flujo de ejecución desde que arranca el servidor hasta que se procesa una petición.
+
+## Convención Utilizada
+- **MAYÚSCULAS**: Indican el "mapa" o "camino" (ej. PASO 1, SIGUIENTE PARADA).
+- **minúsculas**: Explican el funcionamiento técnico del código.
+
+## El Camino Lógico
+
+1.  **Punto de Inicio**: [app.js](file:///c:/Users/Coso/Desktop/simulacro/app.js)
+    - Aquí empieza todo. Verás comentarios que te guían desde la carga de variables hasta el arranque del servidor.
+2.  **Configuraciones**: [mongo.js](file:///c:/Users/Coso/Desktop/simulacro/config/mongo.js) y [mysql.js](file:///c:/Users/Coso/Desktop/simulacro/config/mysql.js)
+    - El camino te lleva a estos archivos para entender cómo se conectan las bases de datos.
+3.  **Rutas (El Mapa de URLs)**: Carpeta `routes/`
+    - Cada archivo de ruta (como [migration.js](file:///c:/Users/Coso/Desktop/simulacro/routes/migration.js)) indica a dónde salta la lógica después.
+4.  **Controladores (La Lógica de Negocio)**: Carpeta `index/controllers/`
+    - Aquí verás cómo se procesan los datos. Por ejemplo, en [doctor.js](file:///c:/Users/Coso/Desktop/simulacro/index/controllers/doctor.js) se explica la sincronización entre SQL y NoSQL.
+5.  **Servicios (El Corazón)**: [migration.js](file:///c:/Users/Coso/Desktop/simulacro/index/services/migration.js)
+    - Detalla el proceso paso a paso de cómo se reparte una fila del CSV entre las dos bases de datos.
+
+## Ejemplo de Comentarios
+```javascript
+// PASO 2: INICIALIZAR LA CONEXIÓN A LA BASE DE DATOS NOSQL (MONGODB)
+// SI QUIERES VER CÓMO SE CONECTA, VE AL ARCHIVO "config/mongo.js"
+connectMongo(); // ejecuta la conexión definida en la carpeta config
+```
+
+## Cómo Probar el CRUD (Guía de Pruebas)
+
+Puedes usar los siguientes comandos `curl` en tu terminal (PowerShell o Bash) para verificar que el CRUD funciona correctamente. Asegúrate de que el servidor esté corriendo (`npm run dev`).
+
+### 1. LISTAR DOCTORES (GET)
+Obtiene todos los doctores registrados en MySQL.
+```bash
+curl http://localhost:3000/api/doctors
+```
+
+### 2. CREAR UN DOCTOR (POST)
+Inserta un nuevo registro en la tabla `doctors` de MySQL.
+```bash
+curl -X POST http://localhost:3000/api/doctors \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Dr. Juan Perez", "email": "juan@saludplus.com", "specialty": "Cardiología"}'
+```
+
+### 3. ACTUALIZAR Y SINCRONIZAR (PUT)
+Actualiza el nombre/especialidad en MySQL y sincroniza el nombre en MongoDB.
+*(Cambia el numero `1` por el ID real del doctor que quieras editar)*.
+```bash
+curl -X PUT http://localhost:3000/api/doctors/1 \
+     -H "Content-Type: application/json" \
+     -d '{"name": "Dr. Juan Perez Editado", "specialty": "Cardiología Avanzada"}'
+```
+
+### 4. ELIMINAR UN DOCTOR (DELETE)
+Borra el doctor de MySQL (y sus citas asociadas por cascada).
+*(Cambia el numero `1` por el ID real)*.
+```bash
+curl -X DELETE http://localhost:3000/api/doctors/1
+```
+
+Espero que este "mapa" y esta guía de pruebas te sean de gran utilidad para tu examen de mañana. ¡Mucho éxito!
